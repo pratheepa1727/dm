@@ -1,0 +1,126 @@
+SET A
+1.
+import numpy as np
+from sklearn import datasets
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load dataset
+wine = datasets.load_wine()
+
+# Convert to DataFrame
+wine_df = pd.DataFrame(wine.data, columns=wine.feature_names)
+
+# (i) Shape
+print("Shape:", wine_df.shape)
+
+# (ii) Descriptive statistics
+print(wine_df.describe())
+
+# (iii) Top 7 and Last 8 rows
+print(wine_df.head(7))
+print(wine_df.tail(8))
+
+# (iv) Boxplot - malic_acid
+plt.boxplot(wine_df['malic_acid'])
+plt.title("Boxplot of malic_acid")
+plt.show()
+
+# (v) Remove outliers (IQR)
+Q1 = wine_df['malic_acid'].quantile(0.25)
+Q3 = wine_df['malic_acid'].quantile(0.75)
+IQR = Q3 - Q1
+
+filtered_df = wine_df[(wine_df['malic_acid'] >= Q1 - 1.5*IQR) &
+                      (wine_df['malic_acid'] <= Q3 + 1.5*IQR)]
+
+plt.boxplot(filtered_df['malic_acid'])
+plt.title("After removing outliers")
+plt.show()
+
+# (vi) Histogram - magnesium
+plt.hist(wine_df['magnesium'], bins=20)
+plt.title("Histogram of magnesium")
+plt.show()
+2.
+import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(0)
+
+X = np.linspace(10, 20, 150)
+y = np.cos(X) + np.random.normal(0, 0.4, size=X.shape)
+
+# Polynomial regression (overfit)
+coeffs = np.polyfit(X, y, 10)
+model = np.poly1d(coeffs)
+
+# Plot
+plt.scatter(X, y)
+plt.plot(X, model(X), color='red')
+plt.title("Overfitting Model")
+plt.show()
+
+SET B
+1.
+import numpy as np
+from sklearn import datasets
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load dataset
+diabetes = datasets.load_diabetes()
+
+# Convert to DataFrame
+df = pd.DataFrame(diabetes.data, columns=diabetes.feature_names)
+df['target'] = diabetes.target
+
+# (i) Shape
+print("Shape:", df.shape)
+
+# (ii) Descriptive statistics
+print(df.describe())
+
+# (iii) Top 6 and Last 7 rows
+print(df.head(6))
+print(df.tail(7))
+
+# (iv) Boxplot - bmi
+plt.boxplot(df['bmi'])
+plt.title("Boxplot of BMI")
+plt.show()
+
+# (v) Remove outliers
+Q1 = df['bmi'].quantile(0.25)
+Q3 = df['bmi'].quantile(0.75)
+IQR = Q3 - Q1
+
+filtered_df = df[(df['bmi'] >= Q1 - 1.5*IQR) &
+                 (df['bmi'] <= Q3 + 1.5*IQR)]
+
+plt.boxplot(filtered_df['bmi'])
+plt.title("After removing outliers")
+plt.show()
+
+# (vi) Histogram - s2
+plt.hist(df['s2'], bins=25)
+plt.title("Histogram of s2")
+plt.show()
+2.
+import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(0)
+
+X = np.linspace(25, 35, 150)
+y = np.sin(X) + np.random.normal(0, 0.25, size=X.shape)
+
+# Linear regression (underfit)
+coeffs = np.polyfit(X, y, 1)
+model = np.poly1d(coeffs)
+
+# Plot
+plt.scatter(X, y)
+plt.plot(X, model(X), color='red')
+plt.title("Underfitting Model")
+plt.show()
